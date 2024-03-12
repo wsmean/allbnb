@@ -1,8 +1,10 @@
-<!doctype html>
-<html lang="en">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
+<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>상세 화면</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -81,7 +83,7 @@
     }
   </style>
 </head>
-
+<body>
 <body>
   <!-- 로그인 모달은 바디 최상단에 넣기!! -->
   <!-- 로그인 모달 -->
@@ -161,7 +163,7 @@
   <!-- 상단 메뉴화면 -->
   <nav class="navbar fixed-top bg-white">
     <div class="container-fluid">
-      <a class="navbar-brand ms-5" href="main.html" style="color: #fe5c5f;">
+      <a class="navbar-brand ms-5" href="hotelInform.do" style="color: #fe5c5f;">
         <img src="img/brand_icon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         allbnb
       </a>
@@ -200,26 +202,26 @@
   <!-- 이미지 모음 -->
   <div class="m-5">
     <div class="bg-white container mt70">
-      <h2 class="m-3"><strong>스코틀랜드 하이랜드 캐슬, 블랙크레이그 가든 아파트 </strong></h2>
+	<c:forEach items="${hotelList}" var="hotels" varStatus="status">	
+      <h2 class="m-3"><strong>${hotels.hotel_title}</strong></h2>
       <div class="m-3 bg-white-subtle">
-        <img src="img/d_ex1.png" style="width: 650px; height: 550px;" class="float-start p-1 rs20">
-        <img src="img/d_ex2.png" style="width: 300px; height: 275px;" class="p-1">
-        <img src="img/d_ex3.png" style="width: 300px; height: 275px;" class="p-1 rt20">
-        <img src="img/d_ex4.png" style="width: 300px; height: 275px;" class="p-1">
-        <img src="img/d_ex5.png" style="width: 300px; height: 275px;" class="p-1 rb20">
+        <img src=img/${hotels.thumbnail} style="width: 650px; height: 550px;" class="float-start p-1 rs20">
+        <img src=img/${hotels.img1} style="width: 300px; height: 275px;" class="p-1">
+        <img src=img/${hotels.img2} style="width: 300px; height: 275px;" class="p-1 rt20">
+        <img src=img/${hotels.img3} style="width: 300px; height: 275px;" class="p-1">
+        <img src=img/${hotels.img4} style="width: 300px; height: 275px;" class="p-1 rb20">
       </div>
       <div class="row">
         <div class="col-8">
           <!-- 부가 설명 -->
           <div class="m-3 ex1">
-            <h5><strong>Balilintuim, 영국의 캐슬</strong></h5>
-            <p>아름다운 스트라타들, 수백 마일의 숲과 언덕 산책로, 현지 레스토랑, 발모랄과 세인트 앤드류스에 쉽게 접근할 수 있는 로맨틱한 스코틀랜드 성의 1층 아파트로 조용한 사색을 즐기거나 야외
-              활동을 즐길 수 있는 곳입니다.</p>
+            <h5><strong>${hotels.hotel_name}</strong></h5>
+            <p>${hotels.hotel_explain}</p>
             <hr>
             <!-- 호스트 정보 -->
             <div>
               <img src="img/profile.png" alt="호스트" width="55px">
-              <span style="font-size:large;"><strong>호스트 : 우수민님</strong><br></span>
+              <span style="font-size:large;"><strong>호스트 : ${hotels.host_name}</strong><br></span>
             </div>
             <hr>
             <h5><strong>호스팅 지역</strong></h5>
@@ -253,16 +255,16 @@
         <!-- 예약바 -->
         <div class="col-4">
           <form class="bg-white shadow rounded1 bg-body-tertiary p-4 sticky1" style="width: 400px; height: 500px;">
-            <h4>₩279,000 / 박</h4>
+            <h4>₩${hotels.hotel_price} / 박</h4>
             <hr>
             <div class="row">
               <div class="col">
                 <label for="exampleFormControlInput1" class="form-label">체크인</label>
-                <input type="text" class="form-control" id="datepicker1" placeholder="날짜 추가">
+                <input type="text" class="form-control" id="datepicker1" placeholder="날짜 추가" onchange="call()">
               </div>
               <div class="col mb-4">
                 <label for="exampleFormControlInput1" class="form-label">체크아웃</label>
-                <input type="text" class="form-control" id="datepicker2" placeholder="날짜 추가">
+                <input type="text" class="form-control" id="datepicker2" placeholder="날짜 추가" onchange="call()">
               </div>
               <div>
                 <label for="exampleFormControlInput1" class="form-label">인원</label>
@@ -280,10 +282,13 @@
             </div>
             <div class="mt-4">
               <div>
-                <span><u>₩279,000 x 1박</u></span>
-                <span class="float-end">₩279,000</span>
+                <u>₩<span id="hotel_day_sum"><u>${hotels.hotel_price}</span>X<span id="days" onchange="datesum()"></u></span>박</u>
+                <!-- <span id="hotel_day_sum"><u>₩${hotels.hotel_price} x <span id="days" onchange="datesum()"></span><span>박</span></u></span> -->
+               <c:set var="total" value="${hotels.hotel_price}"></c:set>
+                <span class="float-end" id="hotel_result"><c:out value="${total}"></c:out></span>
               </div>
               <div class="d-block">
+              <%-- <c:out var="service_total" value=""/> --%>
                 <span class="float-start"><u>올비앤비 서비스 수수료</u></span>
                 <span class="float-end">₩28,000</span>
               </div>
@@ -296,7 +301,7 @@
           </form>
         </div>
       </div>
-
+	</c:forEach>
 
       <!-- 알아두어야할 사항 -->
       <hr>
@@ -398,5 +403,4 @@
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
     crossorigin="anonymous"></script>
 </body>
-
 </html>

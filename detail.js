@@ -20,5 +20,38 @@ $(function() {
     });                    
     
     //초기값을 오늘 날짜로 설정해줘야 합니다.
-    //$('#datepicker1').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+    $('#datepicker1').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후) 
+    
+
+         
 });
+
+
+function call(){
+var startDate = new Date(document.getElementById("datepicker1").value);
+var endDate = new Date(document.getElementById("datepicker2").value);
+
+// 두 날짜 간의 차이 계산
+var timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+var daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+// 결과 출력
+if(startDate && endDate){
+	console.log("두 날짜 간의 차이는 " + daysDifference + "일입니다.");
+	document.getElementById('days').innerHTML = daysDifference;
+	
+}
+console.log($('#hotel_day_sum').text())
+var hotel_d_sum = $('#hotel_day_sum').text();
+var result = hotel_d_sum * daysDifference
+console.log("결과는!!"+result)
+document.getElementById('hotel_result').innerHTML = result;
+
+//서비스 수수료 구하기
+loacation.href="serviceMoney.do"
+}
+
+
+
+
+	

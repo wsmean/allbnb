@@ -1,12 +1,16 @@
-<!doctype html>
-<html lang="en">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
+<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>메인 화면</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="main.js"></script>
 
   <style>
     a {
@@ -62,9 +66,8 @@
     }
   </style>
 </head>
-
 <body>
-  <!-- 로그인 모달은 바디 최상단에 넣기!! -->
+ <!-- 로그인 모달은 바디 최상단에 넣기!! -->
   <!-- 로그인 모달 -->
   <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -143,7 +146,7 @@
   <!-- 상단 메뉴화면 -->
   <nav class="navbar fixed-top bg-white">
     <div class="container-fluid">
-      <a class="navbar-brand ms-5" href="main.html" style="color: #fe5c5f;">
+      <a class="navbar-brand ms-5" href="hotelInform.do" style="color: #fe5c5f;">
         <img src="img/brand_icon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         allbnb
       </a>
@@ -183,15 +186,23 @@
         <div class="btn-group" role="group">
           <div class="form-floating">
             <select class="form-select rounded-pill" id="floatingSelect" aria-label="Floating label select example">
-              <option value="1">유럽</option>
-              <option value="2">아시아</option>
-              <option value="3">아프리카</option>
-              <option value="3">아메리카</option>
-              <option value="3">호주</option>
+              <option name="floatingSelect" value="유럽">유럽</option>
+              <option name="floatingSelect" value="아시아">아시아</option>
+              <option name="floatingSelect" value="아프리카">아프리카</option>
+              <option name="floatingSelect" value="아메리카">아메리카</option>
+              <option name="floatingSelect" value="호주">호주</option>
             </select>
             <label for="floatingSelect">여행지</label>
           </div>
-          <button class="btnall rounded-pill ps-3 pe-3"><img src="img/find.svg" alt="찾기이미지" width="25px"></button>
+          <button class="btnall rounded-pill ps-3 pe-3" onclick="changeFn()"><img src="img/find.svg" alt="찾기이미지" width="25px"></button>
+          <%-- <form action="hotelCountryInform.do" method="post">
+				<select name="searchCondition">
+				<c:forEach items="${conditionMap}" var="option">
+						<option value="${option.value}">${option.key}
+				</c:forEach>
+				</select> 
+				<input type="submit"/>
+		</form> --%>
         </div>
       </div>
     </div>
@@ -201,98 +212,23 @@
 
   <!-- 사진 및 구현 설명창 -->
   <div class="ms-5 me-5 mt70">
-    <div class="row">
-      <div class="col">
-        <a href="detail.html">
-          <img src="img/d_ex1.png" class="rounded img-fluid" alt="숙소1">
-          <div class="m-2">
-            <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-            <p class="fw-bold">₩96,006 / 박</p>
-          </div>
-        </a>
+	<div class="row">      	
+      <c:forEach items="${hotelList}" var="hotels" varStatus="status">
+      	<div class="col pb-4">
+			<a href="detail.do?hotel_title=${hotels.hotel_title}" style="width: 450px">
+	          <img src=img/${hotels.thumbnail} width="400" height="280" class="rounded" alt="숙소1">
+	          <div class="m-2 d-inline">
+	            <p class="fs-5">${hotels.hotel_title}</p>
+	            <p class="fw-bold">₩${hotels.hotel_price} / 박</p>
+	          </div>
+	        </a>
+		</div>
+		<c:if test="${status.count % 4 == 0}">
+			</div> 
+			<div class="row">
+		</c:if>
+		</c:forEach>
       </div>
-      <div class="col pb-4">
-        <img src="img/ex2.png" class="rounded img-fluid" alt="숙소2">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex3.png" class="rounded img-fluid" alt="숙소3">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex4.png" class="rounded img-fluid" alt="숙소4">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col pb-4">
-        <img src="img/ex5.png" class="rounded img-fluid" alt="숙소5">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex6.png" class="rounded img-fluid" alt="숙소6">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex7.png" class="rounded img-fluid" alt="숙소7">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex8.png" class="rounded img-fluid" alt="숙소8">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <img src="img/ex9.png" class="rounded img-fluid" alt="숙소5">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex10.png" class="rounded img-fluid" alt="숙소6">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex11.png" class="rounded img-fluid" alt="숙소7">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-      <div class="col">
-        <img src="img/ex12.png" class="rounded img-fluid" alt="숙소8">
-        <div class="m-2">
-          <p class="fs-5">스코틀랜드 하이랜드 캐슬</p>
-          <p class="fw-bold">₩96,006 / 박</p>
-        </div>
-      </div>
-    </div>
   </div>
   <hr>
   <!-- 하단 부가 설명바 -->
@@ -362,9 +298,8 @@
   <br>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
     crossorigin="anonymous"></script>
-
 </body>
 </html>
