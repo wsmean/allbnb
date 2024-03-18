@@ -27,29 +27,71 @@ $(function() {
 });
 
 
+//전역 변수
+let startDate;
+let endDate;
+let timeDifference;
+let daysDifference;
+let hotel_d_sum;
+let result;
+
+
+
+//숙박별 가격 
 function call(){
-var startDate = new Date(document.getElementById("datepicker1").value);
-var endDate = new Date(document.getElementById("datepicker2").value);
+	startDate = new Date(document.getElementById("datepicker1").value);
+	endDate = new Date(document.getElementById("datepicker2").value);
+	
+	// 두 날짜 간의 차이 계산
+	timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+	daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
-// 두 날짜 간의 차이 계산
-var timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
-var daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-// 결과 출력
-if(startDate && endDate){
-	console.log("두 날짜 간의 차이는 " + daysDifference + "일입니다.");
-	document.getElementById('days').innerHTML = daysDifference;
+	// 결과 출력
+	if(startDate && endDate){
+		console.log("두 날짜 간의 차이는 " + daysDifference + "일입니다.");
+		document.getElementById('days').innerHTML = daysDifference;
+		
+		}
+		
+	console.log($('#hotel_day_sum').text())
+	hotel_d_sum = $('#hotel_day_sum').text();
+	result = hotel_d_sum * daysDifference
+	document.getElementById('hotel_result').innerHTML = "₩"+result;
+	console.log("호텔 숙박료: "+$('#hotel_result').text())
+	
 	
 }
-console.log($('#hotel_day_sum').text())
-var hotel_d_sum = $('#hotel_day_sum').text();
-var result = hotel_d_sum * daysDifference
-console.log("결과는!!"+result)
-document.getElementById('hotel_result').innerHTML = result;
 
-//서비스 수수료 구하기
-loacation.href="serviceMoney.do"
+
+
+
+//인원별 수수료 
+function ser_percent(){
+	let sel = $("#sel_box option:selected").val();
+	console.log("전역변수  불러온 값 : "+result);
+	
+	let totaltotal = sel*result;
+	total2 = Math.round(totaltotal);
+	console.log(total2);
+	console.log("총 수수료 금액"+total2)
+	let final_total = result+total2
+
+	document.getElementById('service_result').innerHTML = "₩"+total2;
+	document.getElementById('final_total').innerHTML = "₩" + final_total;
+	
+	sessionStorage.setItem("count_day",daysDifference);
+	sessionStorage.setItem("stay_result",result);
+	sessionStorage.setItem("service_result",total2);
+	sessionStorage.setItem("final_total",final_total);
+	
+	
 }
+
+
+
+
+
+
 
 
 

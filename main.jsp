@@ -59,6 +59,10 @@
       border: #fe5c5f;
       color: white;
     }
+    
+    .btnreset{
+	      all: unset; 
+        }
 
     .btnall:hover {
       background-color: #fe5c5f;
@@ -79,21 +83,21 @@
         </div>
         <div class="modal-body">
           <form action="login.jsp" method="post">
-            <img class="mb-4" src="img/brand_icon.png" alt="" width="40" height="40">
+            <img class="mb-4" src="/static/img/brand_icon.png" alt="" width="40" height="40">
             <h3 class="h3 mb-3 fw-normal align-middle" style="display: inline-block;">올비앤비에 오신 것을 환영합니다.</h3>
             <div class="form-floating">
-              <input type="text" class="form-control" id="id" placeholder="name@example.com">
-              <label for="id">이메일</label>
+              <input type="text" class="form-control" id="login_email" placeholder="name@example.com">
+              <label for="login_email">이메일</label>
             </div><br>
             <div class="form-floating">
-              <input type="password" class="form-control" id="pwd" placeholder="Password">
-              <label for="pwd">비밀번호</label>
+              <input type="password" class="form-control" id="login_pwd1" placeholder="Password">
+              <label for="login_pwd1">비밀번호</label>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-          <button type="button" class="btn btn-primary" style="background-color: #fe5c5f; border: #fe5c5f;">로그인</button>
+          <button type="button" class="btn btn-primary" style="background-color: #fe5c5f; border: #fe5c5f;" onclick="login_click()">로그인</button>
         </div>
       </div>
     </div>
@@ -109,35 +113,35 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="login.jsp" method="post">
-            <img class="mb-4" src="img/brand_icon.png" alt="" width="40" height="40">
+          <form id="login_form" method="post">
+            <img class="mb-4" src="/static/img/brand_icon.png" alt="" width="40" height="40">
             <h3 class="h3 mb-3 fw-normal align-middle" style="display: inline-block;">사용자 정보를 입력해주세요.</h3>
             <div class="form-floating">
-              <input type="text" class="form-control" id="name" placeholder="name@example.com">
+              <input type="text" class="form-control" id="join_name" placeholder="name@example.com">
               <label for="name">이름</label>
-            </div><br>
+            </div>
+            
             <div class="form-floating">
-              <input type="text" class="form-control" id="email" placeholder="name@example.com">
-              <label for="email">이메일</label>
-            </div><br>
+              <input type="text" class="form-control" id="join_email" placeholder="name@example.com">
+              <label for="join_email">이메일</label>
+            </div><button id ="id_check" type="button" class="btn btn-primary" onclick="check_id()" style="background-color: #fe5c5f; border: #fe5c5f;">중복확인</button><br>
             <div class="form-floating">
-              <input type="password" class="form-control" id="pwd" placeholder="Password">
-              <label for="pwd">비밀번호</label>
+              <input type="password" class="form-control" id="join_pwd1" placeholder="Password" oninput="password_check()">
+              <label for="pwd1">비밀번호</label>
             </div>
             <div class="form-floating">
-              <input type="password" class="form-control" id="pwd1" placeholder="Password">
-              <label for="pwd1">비밀번호 확인</label>
+              <input type="password" class="form-control" id="join_pwd2" placeholder="Password" oninput="password_check()">
+              <label for="pwd2">비밀번호 확인</label>
             </div>
-            <div>
-              <input type="text" readonly class="form-control-plaintext" id="staticEmail"
-                value=" 비밀번호가 일치 합니다! or 일치하지 않습니다">
-            </div>
+                <span id="pwConfirm">비밀번호</span>
+            
+            <input type="hidden" name="checked_id" value="">
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
           <button type="button" class="btn btn-primary"
-            style="background-color: #fe5c5f; border: #fe5c5f;">회원가입</button>
+            style="background-color: #fe5c5f; border: #fe5c5f;" onclick="join_members()">회원가입</button>
         </div>
       </div>
     </div>
@@ -147,17 +151,17 @@
   <nav class="navbar fixed-top bg-white">
     <div class="container-fluid">
       <a class="navbar-brand ms-5" href="hotelInform.do" style="color: #fe5c5f;">
-        <img src="img/brand_icon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        <img src="/static/img/brand_icon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
         allbnb
       </a>
       <div class="justify-content-center" id="navbarNavAltMarkup">
-        <a href="reserve.html" class="m-2">숙소</a>
+        <button class="m-2 btnreset" onclick="hello_reserve()">숙소</button>
         <span class="m-2 disabled" style="color: lightgray;">체험</span>
         <span class="m-2 disabled" style="color: lightgray;">온라인 체험</span>
       </div>
       <div class="d-flex">
         <span class="navbar-text me-3 user-select-none">당신의 공간을 올비앤비하세요</span>
-        <img src="img/globe.svg" alt="인터넷아이콘">
+        <img src="/static/img/globe.svg" alt="인터넷아이콘">
 
         <!-- 사용자 버튼 -->
         <div class="dropdown ms-4 me-5 rounded">
@@ -166,10 +170,12 @@
             사용자
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <button type="button" class="dropdown-item" data-bs-toggle="modal"
+          	<button id="login_btn" type="button" class="dropdown-item" data-bs-toggle="modal"
               data-bs-target="#staticBackdrop1">로그인</button>
-            <button type="button" class="dropdown-item" data-bs-toggle="modal"
+          	<button id="logout_btn" type="button" class="dropdown-item" onclick="logout()">로그아웃</button>
+            <button id="join_btn" type="button" class="dropdown-item" data-bs-toggle="modal"
               data-bs-target="#staticBackdrop2">회원가입</button>
+              <button id="reserve_btn" type="button" class="dropdown-item" onclick="location.href='reserve.html'";>예약내역 확인</button>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -194,7 +200,7 @@
             </select>
             <label for="floatingSelect">여행지</label>
           </div>
-          <button class="btnall rounded-pill ps-3 pe-3" onclick="changeFn()"><img src="img/find.svg" alt="찾기이미지" width="25px"></button>
+          <button class="btnall rounded-pill ps-3 pe-3" onclick="changeFn()"><img src="/static/img/find.svg" alt="찾기이미지" width="25px"></button>
           <%-- <form action="hotelCountryInform.do" method="post">
 				<select name="searchCondition">
 				<c:forEach items="${conditionMap}" var="option">
@@ -216,7 +222,7 @@
       <c:forEach items="${hotelList}" var="hotels" varStatus="status">
       	<div class="col pb-4">
 			<a href="detail.do?hotel_title=${hotels.hotel_title}" style="width: 450px">
-	          <img src=img/${hotels.thumbnail} width="400" height="280" class="rounded" alt="숙소1">
+	          <img src=/static/img/${hotels.thumbnail} width="400" height="280" class="rounded" alt="숙소1">
 	          <div class="m-2 d-inline">
 	            <p class="fs-5">${hotels.hotel_title}</p>
 	            <p class="fw-bold">₩${hotels.hotel_price} / 박</p>
@@ -288,11 +294,11 @@
   <hr>
   <div class="d-flex ms-5 me-5">
     <div class="me-auto">© 2024 Allbnb,Inc. · 개인정보 처리방침 · 이용약관 · 사이트맵 · 한국의 변경된 환불 정책 · 회사 세부정보</div>
-    <div><img src="img/globe.svg" alt="인터넷아이콘">
+    <div><img src="/static/img/globe.svg" alt="인터넷아이콘">
       <span class="align-middle">₩ KRW</span>
-      <img src="img/square-facebook.svg" alt="페이스북 아이콘" width="30" height="24">
-      <img src="img/square-twitter.svg" alt="트위터 아이콘" width="30" height="24">
-      <img src="img/square-instagram.svg" alt="인스타 아이콘" width="30" height="24">
+      <img src="/static/img/square-facebook.svg" alt="페이스북 아이콘" width="30" height="24">
+      <img src="/static/img/square-twitter.svg" alt="트위터 아이콘" width="30" height="24">
+      <img src="/static/img/square-instagram.svg" alt="인스타 아이콘" width="30" height="24">
     </div>
   </div>
   <br>
